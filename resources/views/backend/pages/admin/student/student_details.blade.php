@@ -12,9 +12,9 @@ active
 
                 <h6 class="card-header bg-primary text-white">
                     Student Details (status:@if($student->status == 1)
-                    <span class="badge badge-success">Active</span>
+                    <a href="{{ url("/student/status/change",$student->id) }}" class="badge badge-success">Active</a>
                   @else
-                    <span class="badge badge-danger">Inactive</span>
+                    <a href="{{ url("/student/status/change",$student->id) }}" class="badge badge-danger">Inactive</a>
                   @endif )
                     <a href="{{ url("/student/list") }}" class="btn btn-success float-right btn-sm">Back</a>
                 </h6>
@@ -93,6 +93,16 @@ active
                                 <td>
                                     @if($student->class["name"])
                                     {{ $student->class["name"] }}
+                                    @else
+                                      <span class="badge badge-danger">NA</span>
+                                    @endif
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Batch </th>
+                                <td>
+                                    @if($student->batch["name"])
+                                    {{ $student->batch["name"] }}
                                     @else
                                       <span class="badge badge-danger">NA</span>
                                     @endif

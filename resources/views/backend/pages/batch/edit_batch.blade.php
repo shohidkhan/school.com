@@ -1,7 +1,7 @@
 @extends('backend.layouts.app')
 
-@section("title","Create - Subjecct")
-@section("class_list")
+@section("title","Edit - Batch")
+@section("batch_list")
 active
 @endsection
 @section('content')
@@ -12,25 +12,20 @@ active
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                     <strong>{{ session("success") }}</strong> 
                   </div>
-                @if(session("error"))
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <strong>{{ session("success") }}</strong> 
-                  </div>
                 @endif
-                
                 
                 <div class="card rounded">
                     <h6 class="card-header bg-dark text-white rounded">
-                        Create Class
-                        <a href="{{ url("/class/list") }}" class="btn btn-primary float-right btn-sm">Back</a>
+                        Edit Batch
+                        <a href="{{ url("/batch/list") }}" class="btn btn-primary float-right btn-sm">Back</a>
                     </h6>
-                    <form action="{{ route("create.class") }}" method="POST">
+                    <form action="{{ route("update.batch",$batch->id) }}" method="POST">
                         @csrf
 
                         <div class="card-body">
                             <div class="form-group">
                                 <label for="name">Name</label>
-                                <input type="text" class="form-control" value="{{ old("name") }}" name="name" placeholder="Enter class Name">
+                                <input type="text" class="form-control" value="{{ old("name",$batch->name) }}" name="name" placeholder="Enter batch Name">
                                 @error('name')
                                     <p class="text-danger">{{ $message }}</p>
                                 @enderror
@@ -39,8 +34,8 @@ active
                                 <label for="userType">Status</label>
                                 <select name="status" class="form-control" id="userType">
                                     <option value="">-- select status --</option>
-                                    <option value="1" {{ old("status") == "1" ?"selected":"" }}>Active</option>
-                                    <option value="2" {{ old("status") == "2" ?"selected":"" }}>Inactive</option>
+                                    <option value="1" {{ old("status",$batch->status) == "1" ?"selected":"" }}>Active</option>
+                                    <option value="2" {{ old("status",$batch->status) == "2" ?"selected":"" }}>Inactive</option>
                                      
                                 </select>
                                 @error('status')
@@ -50,7 +45,7 @@ active
                         </div>
 
                         <div class="card-footer bg-dark">
-                            <button type="submit" class="btn btn-primary rounded">Add Class</button>
+                            <button type="submit" class="btn btn-primary rounded">Update</button>
                         </div>
                     </form>
                 </div>

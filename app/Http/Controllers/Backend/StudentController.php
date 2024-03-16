@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Batch;
 use App\Models\Classes;
 use App\Models\Student;
 use App\Models\User;
@@ -24,7 +25,8 @@ class StudentController extends Controller
 
     function student_add(){
         $classes=Classes::get();
-        return view('backend.pages.admin.student.student_add',compact('classes'));
+        $batches=Batch::get();
+        return view('backend.pages.admin.student.student_add',compact('classes','batches'));
     }
     function student_view($id)
     {
@@ -68,6 +70,7 @@ class StudentController extends Controller
                  "emergency_person_name"=>"required",
                  "emergency_person_relation"=>"required",
                  "user_type"=>"required",
+                 "batch_id"=>"required"
             ]);
             
              
@@ -127,6 +130,7 @@ class StudentController extends Controller
                  "mother_occupation"=>$request->mother_occupation,
                  "mother_nid"=>$request->mother_nid,
                  "guardian_occupation"=>$request->guardian_occupation,
+                 "batch_id"=>$request->batch_id
              ]);
  
              DB::commit();
@@ -157,7 +161,8 @@ class StudentController extends Controller
     function student_edit($id){
         $student=Student::where("id",$id)->first();
         $classes=Classes::get();
-        return view('backend.pages.admin.student.student_edit',compact('student','classes'));
+        $batches=Batch::get();
+        return view('backend.pages.admin.student.student_edit',compact('student','classes',"batches"));
     }
 
     public function student_update(Request $request, $id){

@@ -1,7 +1,7 @@
 @extends('backend.layouts.app')
 
-@section("title","Create - Subjecct")
-@section("class_list")
+@section("title","Create - Batch")
+@section("batch_list")
 active
 @endsection
 @section('content')
@@ -12,25 +12,20 @@ active
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                     <strong>{{ session("success") }}</strong> 
                   </div>
-                @if(session("error"))
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <strong>{{ session("success") }}</strong> 
-                  </div>
                 @endif
-                
                 
                 <div class="card rounded">
                     <h6 class="card-header bg-dark text-white rounded">
-                        Create Class
-                        <a href="{{ url("/class/list") }}" class="btn btn-primary float-right btn-sm">Back</a>
+                        Create Batch
+                        <a href="{{ url("/batch/list") }}" class="btn btn-primary float-right btn-sm">Back</a>
                     </h6>
-                    <form action="{{ route("create.class") }}" method="POST">
+                    <form action="{{ route("create.batch") }}" method="POST">
                         @csrf
 
                         <div class="card-body">
                             <div class="form-group">
                                 <label for="name">Name</label>
-                                <input type="text" class="form-control" value="{{ old("name") }}" name="name" placeholder="Enter class Name">
+                                <input type="text" class="form-control" value="{{ old("name") }}" name="name" placeholder="Enter batch Name">
                                 @error('name')
                                     <p class="text-danger">{{ $message }}</p>
                                 @enderror

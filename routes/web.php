@@ -1,13 +1,14 @@
 <?php
 
-use App\Http\Controllers\Backend\AdminController;
-use App\Http\Controllers\Backend\AuthController;
-use App\Http\Controllers\Backend\ClassController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Backend\DashboardController;
+use App\Http\Controllers\Backend\AuthController;
+use App\Http\Controllers\Backend\UserController;
+use App\Http\Controllers\Backend\AdminController;
+use App\Http\Controllers\Backend\BatchController;
+use App\Http\Controllers\Backend\ClassController;
 use App\Http\Controllers\Backend\StudentController;
 use App\Http\Controllers\Backend\SubjectController;
-use App\Http\Controllers\Backend\UserController;
+use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Frontend\FrontendController;
 
 /*
@@ -76,6 +77,17 @@ Route::group(["middleware"=>"admin"],function(){
     Route::get("/student/edit/{id}",[StudentController::class,"student_edit"]);
     Route::post("/student/update/{id}",[StudentController::class,"student_update"])->name("student.update");
     Route::get("/student/delete/{id}",[StudentController::class,"student_edit"])->name("student.delete");
+
+
+
+    //batch backend routes
+    Route::get("/batch/list",[BatchController::class,"batch_list"]);
+    Route::get("/add/batch",[BatchController::class,"batch_add"]);
+    Route::post("/create/batch",[BatchController::class,"create_batch"])->name("create.batch");
+    Route::get("/batch/change/status/{id}",[BatchController::class,"batch_status_change"]);
+    Route::get("/batch/edit/{id}",[BatchController::class,"batch_edit"]);
+    Route::post("/update/batch/{id}",[BatchController::class,"update_batch"])->name("update.batch");
+    Route::delete("/batch/delete/{id}",[BatchController::class,"batch_delete"])->name("batch.delete");
     
 });
 Route::group(["middleware"=>"teacher"],function(){

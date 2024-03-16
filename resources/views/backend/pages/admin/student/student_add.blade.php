@@ -103,6 +103,18 @@ active
                                     <p class="text-danger">{{ $message }}</p>
                                 @enderror
                             </div>
+                            <div class="form-group col-lg-4">
+                                <label for="name">Batch <span class="text-danger">*</span></label>
+                                <select name="batch_id" id="" class="form-control rounded">
+                                    <option value="">-- select batch --</option>
+                                    @foreach ($batches as $batch)
+                                        <option value="{{ $batch->id }}" {{ old("batch_id") == $batch->id ?"selected":"" }}>{{ $batch->name }}</option>
+                                    @endforeach
+                                </select>
+                                @error('batch_id')
+                                    <p class="text-danger">{{ $message }}</p>
+                                @enderror
+                            </div>
 
                             <div class="form-group col-lg-4">
                                 <label for="name">Year <span class="text-danger">*</span></label>
