@@ -9,6 +9,7 @@ use App\Http\Controllers\Backend\ClassController;
 use App\Http\Controllers\Backend\StudentController;
 use App\Http\Controllers\Backend\SubjectController;
 use App\Http\Controllers\Backend\DashboardController;
+use App\Http\Controllers\Backend\ParentController;
 use App\Http\Controllers\Frontend\FrontendController;
 
 /*
@@ -60,6 +61,7 @@ Route::group(["middleware"=>"admin"],function(){
     Route::post("/create/subject",[SubjectController::class,"create_subject"])->name("create.subject");
     Route::get("/subject/edit/{id}",[SubjectController::class,"subject_edit"]);
     Route::post("/update/subject/{id}",[SubjectController::class,"update_subject"])->name("update.subject");
+    Route::get("/subject/status/change/{id}",[SubjectController::class,"subject_status_change"]);
     Route::delete("/subject/delete/{id}",[SubjectController::class,"delete_subject"])->name("subject.delete");
 
 
@@ -88,18 +90,35 @@ Route::group(["middleware"=>"admin"],function(){
     Route::get("/batch/edit/{id}",[BatchController::class,"batch_edit"]);
     Route::post("/update/batch/{id}",[BatchController::class,"update_batch"])->name("update.batch");
     Route::delete("/batch/delete/{id}",[BatchController::class,"batch_delete"])->name("batch.delete");
+
+    // parents backend routes
+
+    Route::get("/parent/list",[ParentController::class,"parent_list"]);
+    Route::get("/add/parent",[ParentController::class,"parent_add"]);
+    Route::post("/create/parent",[ParentController::class,"create_parent"])->name("create.parent");
+    Route::get("/parent/status/change/{id}",[ParentController::class,"parent_status_change"]);
+    Route::get("/parent/details/{id}",[ParentController::class,"parent_details"]);
+    Route::get("/parent/edit/{id}",[ParentController::class,"parent_edit"]);
+    Route::post("/parent/update/{id}",[ParentController::class,"parent_update"])->name("parent.update");
+    Route::delete("/parent/delete/{id}",[ParentController::class,"parent_delete"])->name("parent.delete");
     
 });
+
+
 Route::group(["middleware"=>"teacher"],function(){
     Route::get("teacher/dashboard",[DashboardController::class,"home"]);
 
     Route::get("/teacher/change-password",[UserController::class,"changePassword"]);
 });
+
+
 Route::group(["middleware"=>"student"],function(){
     Route::get("student/dashboard",[DashboardController::class,"home"]);
 
      Route::get("/student/change-password",[UserController::class,"changePassword"]);
 });
+
+
 Route::group(["middleware"=>"parent"],function(){
     Route::get("parent/dashboard",[DashboardController::class,"home"]);
 

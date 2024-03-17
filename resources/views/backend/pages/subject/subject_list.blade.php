@@ -104,9 +104,9 @@ active
                                 <td>
                                   <a href="{{ url("/changeStatus",$subject->id) }}">
                                     @if($subject->status == 1)
-                                      <span class="badge badge-success">Active</span>
+                                      <a href="{{ url("/subject/status/change",$subject->id) }}" class="badge badge-success">Active</a>
                                     @else
-                                      <span class="badge badge-danger">Inactive</span>
+                                      <a href="{{ url("/subject/status/change",$subject->id) }}" class="badge badge-danger">Inactive</a>
                                     @endif
                                   </a>
                                 </td>

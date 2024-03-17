@@ -1,7 +1,7 @@
 @extends('backend.layouts.app')
 
-@section("title","Student | List")
-@section("student_list")
+@section("title","Parent | List")
+@section("parent_list")
 active
 @endsection
 @section('content')
@@ -10,42 +10,22 @@ active
         <div class="col-lg-12 mb-3">
           <div class="card">
             <div class="card-header">
-              Search student
+              Search Parents
             </div>
             <div class="card-body">
-              <form action="{{ url("/student/list") }}" class="row" method="GET">
+              <form action="{{ url("/parent/list") }}" class="row" method="GET">
                 <div class="col-lg-3 form-group">
                   <input type="text" name="name" value="{{ Request::get("name") }}" class="form-control" placeholder="Enter Name">
                 </div>
                 <div class="col-lg-3 form-group">
-                  <input type="text" name="roll" value="{{ Request::get("roll") }}" class="form-control" placeholder="Enter Roll">
+                  <input type="text" name="email" value="{{ Request::get("email") }}" class="form-control" placeholder="Enter email">
                 </div>
                 <div class="col-lg-3 form-group">
-                  <input type="text" name="registration_no" value="{{ Request::get("registration_no") }}" class="form-control" placeholder="Enter Registration No">
-                </div>
-
+                  <input type="text" name="nid_no" value="{{ Request::get("nid_no") }}" class="form-control" placeholder="Enter Nid No">
+                </div>              
                 <div class="col-lg-3 form-group">
-                  <select name="class_id" class="form-control" id="userType">
-                    <option value="">-- select Class --</option>
-                    @foreach ($classes as $class)
-                    <option value="{{ $class->id }}" {{ old("class_id",Request::get("class_id")) ==  $class->id  ?"selected":"" }}>{{ $class->name }}</option>           
-                    @endforeach
-                  </select>
-                  @error('class_id')
-                      <p class="text-danger">{{ $message }}</p>
-                  @enderror
-                </div>               
-                <div class="col-lg-3 form-group">
-                  <select name="batch_id" class="form-control" id="userType">
-                    <option value="">-- select Batch --</option>
-                    @foreach ($batches as $batch)
-                    <option value="{{ $batch->id }}" {{ old("batch_id",Request::get("batch_id")) ==  $batch->id  ?"selected":"" }}>{{ $batch->name }}</option>           
-                    @endforeach
-                  </select>
-                  @error('batch_id')
-                      <p class="text-danger">{{ $message }}</p>
-                  @enderror
-                </div>               
+                  <input type="text" name="phone" value="{{ Request::get("phone") }}" class="form-control" placeholder="Enter Phone Number">
+                </div>              
                 <div class="col-lg-3 form-group">
                   <select name="status" class="form-control" id="userType">
                     <option value="">-- select status --</option>
@@ -59,7 +39,7 @@ active
                 
                 <div class="col-lg-3 form-group">
                   <button class="btn btn-info">Search</button>
-                  <a href="{{ url("/student/list") }}" class="btn btn-success">Reset</a>
+                  <a href="{{ url("/parent/list") }}" class="btn btn-success">Reset</a>
                 </div>
               </form>
             </div>
@@ -72,20 +52,26 @@ active
                     <strong>{{ session("success") }}</strong> 
                   </div>
           @endif
+          @if(session("error"))
+                
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>{{ session("error") }}</strong> 
+                  </div>
+          @endif
             <div class="card">
                 <h6 class="card-header bg-primary text-white d-flex justify-content-between">
-                    <span>Student List (Total students :  {{ $total_student }})</span> 
+                    <span>Parent List (Total Parnets :  {{ $total_parents }})</span> 
 
                     
-                    <span class="ms-5">
-                      @if ($student_lists_count === null)
+                    {{-- <span class="ms-5">
+                      @if ($parent_lists_count === null)
                       Total Search Result : 0
                       @else 
-                      Total Search Result : {{ $student_lists_count }}
+                      Total Search Result : {{ $parent_lists_count }}
                       @endif
-                      </span>
+                    </span> --}}
                       
-                    <a href="{{ url("/add/student") }}" class="btn btn-success float-right btn-sm">Add New Class</a>
+                    <a href="{{ url("/add/parent") }}" class="btn btn-success float-right btn-sm">Add New Class</a>
                 </h6>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -93,43 +79,53 @@ active
                           <thead >
                             <tr >
                                 <th class="text-center">SL.</th>
-                                <th class="text-center">Student Name</th>
-                                <th class="text-center">Registration</th>
-                                <th class="text-center">Roll</th>
-                                <th class="text-center">Class</th>
+                                <th class="text-center">Name</th>
+                                <th class="text-center">Nid No</th>
+                                <th class="text-center">Email</th>
+                                <th class="text-center">Phone</th>
+                                <th class="text-center">Gender</th>
                                 <th class="text-center">Status</th>
                                 <th class="text-center">Action</th>
                             </tr>
                           </thead>
                           <tbody>
-                            @forelse ($student_lists as $student)
+                            @forelse ($parents as $parent)
                             <tr class="text-center">
-                                <td>{{ $student->id }}</td>
-                                <td>{{ $student->first_name }} {{ $student->last_name }}</td>
+                                <td>{{ $parent->id }}</td>
+                                <td>{{ $parent->name }} </td>
                                 <td>
-                                    @if($student->registration_no)
-                                    {{ $student->registration_no }}
+                                    @if($parent->nid_no)
+                                    {{ $parent->nid_no }}
                                     @else
                                       <span class="badge badge-danger">NA</span>
                                     @endif
                                 </td>
                                 <td>
-                                    @if($student->roll)
-                                    {{ $student->roll }}
+                                    @if($parent->email)
+                                    {{ $parent->email }}
+                                    @else
+                                      <span class="badge badge-danger">NA</span>
+                                    @endif
+                                </td>
+
+                                <td>
+                                    @if($parent->phone)
+                                    {{ $parent->phone }}
                                     @else
                                       <span class="badge badge-danger">NA</span>
                                     @endif
                                 </td>
                                 <td>
-                                    @if($student->class)
-                                    {{ $student->class["name"] }}
+                                    @if($parent->gender)
+                                    {{ $parent->gender }}
                                     @else
                                       <span class="badge badge-danger">NA</span>
                                     @endif
                                 </td>
+
                                 <td>
-                                  <a href="{{ url("/student/status/change",$student->id) }}">
-                                    @if($student->status == 1)
+                                  <a href="{{ url("/parent/status/change",$parent->id) }}">
+                                    @if($parent->status == 1)
                                       <span class="badge badge-success">Active</span>
                                     @else
                                       <span class="badge badge-danger">Inactive</span>
@@ -137,9 +133,9 @@ active
                                   </a>
                                 </td>
                                 <td>
-                                    <a href="{{ url("/student/view", $student->id) }}" class="btn btn-primary btn-sm rounded">View</a>
-                                    <a href="{{ url("/student/edit", $student->id) }}" class="btn btn-info btn-sm rounded">Edit</a>
-                                    <form action="{{ route("student.delete",$student->id) }}" class="d-inline" method="POST">
+                                    <a href="{{ url("/parent/details", $parent->id) }}" class="btn btn-primary btn-sm rounded">View</a>
+                                    <a href="{{ url("/parent/edit", $parent->id) }}" class="btn btn-info btn-sm rounded">Edit</a>
+                                    <form action="{{ route("parent.delete",$parent->id) }}" class="d-inline" method="POST">
                                       @csrf
                                       @method("DELETE")
                                       <button type="submit" class="btn d-inline rounded btn-danger btn-sm">Delete</button>
@@ -148,13 +144,13 @@ active
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="7" class="text-center">No User Found</td>
+                                <td colspan="8" class="text-center">No User Found</td>
                             </tr>
                             @endforelse
                           </tbody>
                         </table>
                         <div class="float-right p-3 ">
-                          {{ $student_lists->links() }}
+                          {{ $parents->links() }}
                         </div>
                       </div>
                 </div>

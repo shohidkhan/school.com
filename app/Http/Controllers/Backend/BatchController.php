@@ -56,7 +56,7 @@ class BatchController extends Controller
             $batch=Batch::findOrFail($id);
             
             Batch::where("id",$id)->update([
-                "status"=>$batch->status === 1 ? 0 : 1,
+                "status"=>$batch->status === 1 ? 2 : 1,
             ]);
             return redirect("/batch/list")->with("success","Batch status changed successfully");
            

@@ -17,10 +17,40 @@ class StudentController extends Controller
 {
     //
 
-    function student_list()
+    function student_list(Request $request)
     {
-        $student_lists=Student::with("user","class")->paginate(10);
-        return view('backend.pages.admin.student.student_list',compact('student_lists'));
+        $student_lists=Student::with("user","class");
+        $student_lists_count=Student::with("user","class");
+        if(!empty($request->name)){
+            $student_lists=$student_lists->where("first_name","like","%".$request->name."%");
+            $student_lists_count=$student_lists_count->where("first_name","like","%".$request->name."%");
+        }
+        if(!empty($request->roll)){
+            $student_lists=$student_lists->where("roll","=",$request->roll);
+            $student_lists_count=$student_lists_count->where("roll","=",$request->roll);
+        }
+        if(!empty($request->registration_no)){
+            $student_lists=$student_lists->where("registration_no","=",$request->registration_no);
+            $student_lists_count=$student_lists_count->where("registration_no","=",$request->registration_no);
+        }
+        if(!empty($request->class_id)){
+            $student_lists=$student_lists->where("class_id","=",$request->class_id);
+            $student_lists_count=$student_lists_count->where("class_id","=",$request->class_id);
+        }
+        if(!empty($request->batch_id)){
+            $student_lists=$student_lists->where("batch_id","=",$request->batch_id);
+            $student_lists_count=$student_lists_count->where("batch_id","=",$request->batch_id);
+        }
+        if(!empty($request->status)){
+            $student_lists=$student_lists->where("status","=",$request->status);
+            $student_lists_count=$student_lists_count->where("status","=",$request->status);
+        }
+        $total_student=Student::count();
+        $classes=Classes::get();
+        $batches=Batch::get();
+        $student_lists_count=$student_lists_count->count();
+        $student_lists=$student_lists->paginate(10);
+        return view('backend.pages.admin.student.student_list',compact('student_lists',"total_student","classes","batches","student_lists_count"));
     }
 
     function student_add(){
@@ -147,7 +177,7 @@ class StudentController extends Controller
         $student=Student::where("id",$id)->first();
         if($student->status==1){
             $student->update([
-                "status"=>0
+                "status"=>2
             ]);
             return redirect()->back()->with("success","Student Inactive Successfully");
         }else{
@@ -166,9 +196,9 @@ class StudentController extends Controller
     }
 
     public function student_update(Request $request, $id){
+        try{
         $student=Student::where("id",$id)->first();
         $request->validate([
-            'password'=>'required',
             'class_id'=>'required',
             "first_name"=>"required",
             "last_name"=>"required",
@@ -180,7 +210,7 @@ class StudentController extends Controller
              "present_address"=>"required",
              "roll"=>"required",
              "year"=>"required",
-             "registration_no"=>"required|unique:students,registration_no".$student->id,
+             "registration_no"=>"required|unique:students,registration_no,$student->id",
              "nationality"=>"required",
              "nid_no"=>"required",
              "marital_status"=>"required",
@@ -196,6 +226,108 @@ class StudentController extends Controller
              "emergency_person_name"=>"required",
              "emergency_person_relation"=>"required",
         ]);
+
+        if($request->hasFile("profile_pic")){
+            $student=Student::where("id",$id)->first();
+            if($student->profile_pic != null){
+                unlink(public_path($student->profile_pic));
+            }
+            $new_img=$request->file("profile_pic");
+            $new_img_name="profile_pic".time().".".$new_img->getClientOriginalExtension();
+            $new_img_path="uploads/profile/".$new_img_name;
+            $new_img->move(public_path("uploads/profile"),$new_img_name);
+            $student->update([
+                "class_id"=>$request->class_id,
+                 "first_name"=>$request->first_name,
+                 "last_name"=>$request->last_name,
+                 "admission_form_no"=>$request->admission_form_no,
+                 "gender"=>$request->gender,
+                 "date_of_birth"=>$request->date_of_birth,
+                 "blood_group"=>$request->blood_group,
+                 "parmanent_address"=>$request->parmanent_address,
+                 "present_address"=>$request->present_address,
+                 "roll"=>$request->roll,
+                 "year"=>$request->year,
+                 "registration_no"=>$request->registration_no,
+                 "nationality"=>$request->nationality,
+                 "nid_no"=>$request->nid_no,
+                 "marital_status"=>$request->marital_status,
+                 "religion"=>$request->religion,
+                 "status"=>$request->status,
+                 "father_phone"=>$request->father_phone,
+                 "father_name"=>$request->father_name,
+                 "mother_phone"=>$request->mother_phone,
+                 "mother_name"=>$request->mother_name,
+                 "guardian_name"=>$request->guardian_name,
+                 "guardian_phone"=>$request->guardian_phone,
+                 "emergency_contact"=>$request->emergency_contact,
+                 "emergency_person_name"=>$request->emergency_person_name,
+                 "emergency_person_relation"=>$request->emergency_person_relation,
+                 "profile_pic"=>  $new_img_path,
+                 "student_email"=>$request->email,
+                 "student_phone"=>$request->student_phone,
+                 "birth_place"=>$request->birth_place,
+                 "admission_date"=>$request->admission_date,
+                 "weight"=>$request->weight,
+                 "height"=>$request->height,
+                 "father_occupation"=>$request->father_occupation,
+                 "father_nid"=>$request->father_nid,
+                 "mother_occupation"=>$request->mother_occupation,
+                 "mother_nid"=>$request->mother_nid,
+                 "guardian_occupation"=>$request->guardian_occupation,
+                 "batch_id"=>$request->batch_id
+            ]);
+
+            return redirect()->back()->with("success","Student Update Successfully");
+        }else{
+            $student=Student::where("id",$id)->first();
+            $student->update([
+                "class_id"=>$request->class_id,
+                 "first_name"=>$request->first_name,
+                 "last_name"=>$request->last_name,
+                 "admission_form_no"=>$request->admission_form_no,
+                 "gender"=>$request->gender,
+                 "date_of_birth"=>$request->date_of_birth,
+                 "blood_group"=>$request->blood_group,
+                 "parmanent_address"=>$request->parmanent_address,
+                 "present_address"=>$request->present_address,
+                 "roll"=>$request->roll,
+                 "year"=>$request->year,
+                 "registration_no"=>$request->registration_no,
+                 "nationality"=>$request->nationality,
+                 "nid_no"=>$request->nid_no,
+                 "marital_status"=>$request->marital_status,
+                 "religion"=>$request->religion,
+                 "status"=>$request->status,
+                 "father_phone"=>$request->father_phone,
+                 "father_name"=>$request->father_name,
+                 "mother_phone"=>$request->mother_phone,
+                 "mother_name"=>$request->mother_name,
+                 "guardian_name"=>$request->guardian_name,
+                 "guardian_phone"=>$request->guardian_phone,
+                 "emergency_contact"=>$request->emergency_contact,
+                 "emergency_person_name"=>$request->emergency_person_name,
+                 "emergency_person_relation"=>$request->emergency_person_relation,
+                 "profile_pic"=>  $student->profile_pic,
+                 "student_email"=>$request->email,
+                 "student_phone"=>$request->student_phone,
+                 "birth_place"=>$request->birth_place,
+                 "admission_date"=>$request->admission_date,
+                 "weight"=>$request->weight,
+                 "height"=>$request->height,
+                 "father_occupation"=>$request->father_occupation,
+                 "father_nid"=>$request->father_nid,
+                 "mother_occupation"=>$request->mother_occupation,
+                 "mother_nid"=>$request->mother_nid,
+                 "guardian_occupation"=>$request->guardian_occupation,
+                 "batch_id"=>$request->batch_id
+            ]);
+
+            return redirect()->back()->with("success","Student Update Successfully");
+        }
+        }catch(Exception $e){
+            return redirect()->back()->with("error",$e->getMessage());
+        }
     }
 
     

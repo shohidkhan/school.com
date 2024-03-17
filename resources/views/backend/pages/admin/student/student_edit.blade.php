@@ -16,7 +16,6 @@ active
                   </div>
           @endif
           @if(session("error"))
-                
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                     <strong>{{ session("error") }}</strong> 
                   </div>

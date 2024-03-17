@@ -83,6 +83,22 @@ class SubjectController extends Controller
         return redirect("/subject/list")->with('success', 'Subject updated successfully.');
     }
 
+    function subject_status_change(Request $request,$id){
+        $subject=Subject::findOrFail($id);
+        if($subject->status==1){
+            Subject::where("id",$id)->update([
+                "status"=> 2,
+            ]);
+            return redirect("/subject/list")->with('success', 'Subject status changed successfully.');
+        }else{
+            Subject::where("id",$id)->update([
+                "status"=> 1,
+            ]);
+            return redirect("/subject/list")->with('success', 'Subject status changed successfully.');
+        }
+       
+        
+    }
     function delete_subject($id){
         $subject=Subject::find($id);
         $subject->delete();
