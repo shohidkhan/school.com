@@ -101,6 +101,9 @@ Route::group(["middleware"=>"admin"],function(){
     Route::get("/parent/edit/{id}",[ParentController::class,"parent_edit"]);
     Route::post("/parent/update/{id}",[ParentController::class,"parent_update"])->name("parent.update");
     Route::delete("/parent/delete/{id}",[ParentController::class,"parent_delete"])->name("parent.delete");
+    Route::get("/assign/student/{id}",[ParentController::class,"assign_student"]);
+    Route::post("/assign/student/store",[ParentController::class,"assign_student_store"])->name("assign.student.store");
+    Route::delete("/assign/student/delete/{id}",[ParentController::class,"assign_student_delete"])->name("assign.student.delete");
     
 });
 

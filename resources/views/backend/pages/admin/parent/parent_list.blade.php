@@ -71,7 +71,7 @@ active
                       @endif
                     </span> --}}
                       
-                    <a href="{{ url("/add/parent") }}" class="btn btn-success float-right btn-sm">Add New Class</a>
+                    <a href="{{ url("/add/parent") }}" class="btn btn-success float-right btn-sm">Add New Parent</a>
                 </h6>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -135,6 +135,9 @@ active
                                 <td>
                                     <a href="{{ url("/parent/details", $parent->id) }}" class="btn btn-primary btn-sm rounded">View</a>
                                     <a href="{{ url("/parent/edit", $parent->id) }}" class="btn btn-info btn-sm rounded">Edit</a>
+                                    @if($parent->status == 1)
+                                    <a href="{{ url("/assign/student", $parent->id) }}" class="btn btn-info btn-sm rounded">Assign Student</a>
+                                    @endif
                                     <form action="{{ route("parent.delete",$parent->id) }}" class="d-inline" method="POST">
                                       @csrf
                                       @method("DELETE")
