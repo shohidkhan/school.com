@@ -6,10 +6,11 @@ use App\Http\Controllers\Backend\UserController;
 use App\Http\Controllers\Backend\AdminController;
 use App\Http\Controllers\Backend\BatchController;
 use App\Http\Controllers\Backend\ClassController;
+use App\Http\Controllers\Backend\ParentController;
 use App\Http\Controllers\Backend\StudentController;
 use App\Http\Controllers\Backend\SubjectController;
+use App\Http\Controllers\Backend\TeacherController;
 use App\Http\Controllers\Backend\DashboardController;
-use App\Http\Controllers\Backend\ParentController;
 use App\Http\Controllers\Frontend\FrontendController;
 
 /*
@@ -92,7 +93,6 @@ Route::group(["middleware"=>"admin"],function(){
     Route::delete("/batch/delete/{id}",[BatchController::class,"batch_delete"])->name("batch.delete");
 
     // parents backend routes
-
     Route::get("/parent/list",[ParentController::class,"parent_list"]);
     Route::get("/add/parent",[ParentController::class,"parent_add"]);
     Route::post("/create/parent",[ParentController::class,"create_parent"])->name("create.parent");
@@ -104,6 +104,18 @@ Route::group(["middleware"=>"admin"],function(){
     Route::get("/assign/student/{id}",[ParentController::class,"assign_student"]);
     Route::post("/assign/student/store",[ParentController::class,"assign_student_store"])->name("assign.student.store");
     Route::delete("/assign/student/delete/{id}",[ParentController::class,"assign_student_delete"])->name("assign.student.delete");
+
+
+
+    //Teacher backend routes
+    Route::get("/teacher/list",[TeacherController::class,"teacher_list"]);
+    Route::get("/add/teacher",[TeacherController::class,"teacher_add"]);
+    Route::post("/create/teacher",[TeacherController::class,"create_teacher"])->name("create.teacher");
+    Route::get("/teacher/details/{id}",[TeacherController::class,"teacher_details"]);
+    Route::get("/teacher/status/change/{id}",[TeacherController::class,"teacher_status_change"]);
+    Route::get("/teacher/edit/{id}",[TeacherController::class,"teacher_edit"]);
+    Route::post("/teacher/update/{id}",[TeacherController::class,"teacher_update"])->name("teacher.update");
+    Route::delete("/teacher/delete/{id}",[TeacherController::class,"teacher_delete"])->name("teacher.delete");
     
 });
 
