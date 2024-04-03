@@ -122,21 +122,27 @@ Route::group(["middleware"=>"admin"],function(){
 
 Route::group(["middleware"=>"teacher"],function(){
     Route::get("teacher/dashboard",[DashboardController::class,"home"]);
-
+    Route::get("/teacher/account",[UserController::class,"myAccount"]);
+    Route::get("/teacher/account/edit/{id}",[UserController::class,"myAccountEdit"]);
+    Route::post("/teacher/account/update/{id}",[UserController::class,"postTeacherAccountUpdate"])->name("teacher.account.update");
     Route::get("/teacher/change-password",[UserController::class,"changePassword"]);
 });
 
 
 Route::group(["middleware"=>"student"],function(){
     Route::get("student/dashboard",[DashboardController::class,"home"]);
-
-     Route::get("/student/change-password",[UserController::class,"changePassword"]);
+    Route::get("/student/account",[UserController::class,"myAccount"]);
+    Route::get("/student/account/edit/{id}",[UserController::class,"myAccountEdit"]);
+    Route::post("/student/account/update/{id}",[UserController::class,"postStudentAccountUpdate"])->name("student.account.update");
+    Route::get("/student/change-password",[UserController::class,"changePassword"]);
 });
 
 
 Route::group(["middleware"=>"parent"],function(){
     Route::get("parent/dashboard",[DashboardController::class,"home"]);
-
-     Route::get("/parent/change-password",[UserController::class,"changePassword"]);
+    Route::get("/parent/account",[UserController::class,"myAccount"]);
+    Route::get("/parent/account/edit/{id}",[UserController::class,"myAccountEdit"]);
+    Route::post("/parent/account/update/{id}",[UserController::class,"postParentAccountUpdate"])->name("parent.account.update");
+    Route::get("/parent/change-password",[UserController::class,"changePassword"]);
 });
 

@@ -196,6 +196,7 @@ class StudentController extends Controller
     }
 
     public function student_update(Request $request, $id){
+        DB::beginTransaction();
         try{
         $student=Student::where("id",$id)->first();
         $request->validate([
@@ -229,6 +230,7 @@ class StudentController extends Controller
 
         if($request->hasFile("profile_pic")){
             $student=Student::where("id",$id)->first();
+            $user=User::where("id",$student->user_id)->first();
             if($student->profile_pic != null){
                 unlink(public_path($student->profile_pic));
             }
@@ -277,10 +279,15 @@ class StudentController extends Controller
                  "guardian_occupation"=>$request->guardian_occupation,
                  "batch_id"=>$request->batch_id
             ]);
-
+            $user->update([
+                "name"=>$request->first_name." ".$request->last_name,
+                "email"=>$request->email
+            ]);
+            DB::commit();
             return redirect()->back()->with("success","Student Update Successfully");
         }else{
             $student=Student::where("id",$id)->first();
+            $user=User::where("id",$student->user_id)->first();
             $student->update([
                 "class_id"=>$request->class_id,
                  "first_name"=>$request->first_name,
@@ -322,10 +329,16 @@ class StudentController extends Controller
                  "guardian_occupation"=>$request->guardian_occupation,
                  "batch_id"=>$request->batch_id
             ]);
+            $user->update([
+                "name"=>$request->first_name." ".$request->last_name,
+                "email"=>$request->email
+            ]);
+            DB::commit();
 
             return redirect()->back()->with("success","Student Update Successfully");
         }
         }catch(Exception $e){
+            DB::rollBack();
             return redirect()->back()->with("error",$e->getMessage());
         }
     }

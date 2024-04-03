@@ -89,17 +89,24 @@ class ParentController extends Controller
     function parent_status_change($id){
         try{
             $parent=Parents::findOrFail($id);
-            if($parent->status==1){
-                Parents::where("id",$id)->update([
-                    "status"=>2,
-                ]);
-                return redirect()->back()->with('success', 'Parent status changed successfully.');
+            $assignedStudentToParents=AssignStudentToParent::where("parent_id",$id)->get();
+            if(!count($assignedStudentToParents)>0){
+               
+                if($parent->status==1){
+                    Parents::where("id",$id)->update([
+                        "status"=>2,
+                    ]);
+                    return redirect()->back()->with('success', 'Parent status changed successfully.');
+                }else{
+                    Parents::where("id",$id)->update([
+                        "status"=>1,
+                    ]);
+                    return redirect()->back()->with('success', 'Parent status changed successfully.');
+                }
             }else{
-                Parents::where("id",$id)->update([
-                    "status"=>1,
-                ]);
-                return redirect()->back()->with('success', 'Parent status changed successfully.');
+                return redirect()->back()->with("error","Parent is assigned to student");
             }
+            
        
         }catch(Exception $e){
             return redirect()->back()->with("error",$e->getMessage());
@@ -214,7 +221,8 @@ class ParentController extends Controller
                 "parent_id"=>"required",
             ]);
             $parent=Parents::where("id",$request->parent_id)->first();
-            if($parent->status===1){
+            // dd($parent->status);
+            if($parent->status==1){
                 AssignStudentToParent::create([
                     "student_id"=>$request->student_id,
                     "parent_id"=>$request->parent_id

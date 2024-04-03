@@ -96,10 +96,17 @@
       </a><!-- sl-menu-link -->
 
       @elseif(Auth::user()->user_type===2)
-      <a href="{{ url("/teacher/dashboard") }}" class="sl-menu-link active">
+      <a href="{{ url("/teacher/dashboard") }}" class="sl-menu-link">
         <div class="sl-menu-item">
           <i class="menu-item-icon icon ion-ios-home-outline tx-22"></i>
           <span class="menu-item-label">Dashboard</span>
+        </div><!-- menu-item -->
+      </a><!-- sl-menu-link -->
+
+      <a href="{{ url("/teacher/account") }}" class="sl-menu-link @yield("my_account") rounded">
+        <div class="sl-menu-item">
+          <i class="menu-item-icon ion-ios-pie-outline tx-20"></i>
+          <span class="menu-item-label">My Account</span>
         </div><!-- menu-item -->
       </a><!-- sl-menu-link -->
 
@@ -110,10 +117,16 @@
         </div><!-- menu-item -->
       </a><!-- sl-menu-link -->
       @elseif(Auth::user()->user_type===3)
-      <a href="{{ url("/student/dashboard") }}" class="sl-menu-link active">
+      <a href="{{ url("/student/dashboard") }}" class="sl-menu-link">
         <div class="sl-menu-item">
           <i class="menu-item-icon icon ion-ios-home-outline tx-22"></i>
           <span class="menu-item-label">Dashboard</span>
+        </div><!-- menu-item -->
+      </a><!-- sl-menu-link -->
+      <a href="{{ url("/student/account") }}" class="sl-menu-link @yield("my_account") rounded">
+        <div class="sl-menu-item">
+          <i class="menu-item-icon ion-ios-pie-outline tx-20"></i>
+          <span class="menu-item-label">My Account</span>
         </div><!-- menu-item -->
       </a><!-- sl-menu-link -->
 
@@ -124,10 +137,16 @@
         </div><!-- menu-item -->
       </a><!-- sl-menu-link -->
       @elseif(Auth::user()->user_type===4)
-      <a href="{{ url("/parent/dashboard") }}" class="sl-menu-link active">
+      <a href="{{ url("/parent/dashboard") }}" class="sl-menu-link ">
         <div class="sl-menu-item">
           <i class="menu-item-icon icon ion-ios-home-outline tx-22"></i>
           <span class="menu-item-label">Dashboard</span>
+        </div><!-- menu-item -->
+      </a><!-- sl-menu-link -->
+      <a href="{{ url("/parent/account") }}" class="sl-menu-link @yield("my_account") rounded">
+        <div class="sl-menu-item">
+          <i class="menu-item-icon icon ion-ios-home-outline tx-22"></i>
+          <span class="menu-item-label">My Account</span>
         </div><!-- menu-item -->
       </a><!-- sl-menu-link -->
 
